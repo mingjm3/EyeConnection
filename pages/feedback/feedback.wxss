@@ -1,0 +1,30 @@
+#total{
+  width:100%;
+  height:1300rpx;
+  background-color: rgb(245,245,245);
+}
+
+#sheet{
+  width:100%;
+  height:800rpx;
+  background-color: white;
+  position: relative;
+  top:20rpx;
+}
+#sheet input{
+  width:400rpx;
+  height:80rpx;
+  position: relative;
+  bottom: 25rpx;
+}
+#btnFeedback{
+  position: relative;
+  top:50rpx;
+  background-color:#40a9ff;
+  width:600rpx;
+  border-radius: 50rpx;
+}
+#btnFeedback text{
+  color:white;
+  font-size: 39rpx;
+}

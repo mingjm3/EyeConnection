@@ -1,0 +1,23 @@
+<view id="total">
+  <image src="/icon/mainmark.png"></image>
+  <form bindsubmit="Login">
+    <view id="username">
+      <text>用户名</text>
+      <input type="text" name="username" placeholder="输入您的用户名"></input>
+    </view>
+    <view id="pwd">
+      <text>密码</text>
+      <input type="password" name="pwd" placeholder="输入您的密码"></input>
+    </view>
+    <button id="btnLogin" form-type="submit"><text>登录</text></button>
+  </form>
+  <button bindtap="doctorLogin" id="btnDoctorLogin">
+    <text>医生登录入口</text>
+  </button>
+  <button bindtap="gotoRegister" id="btnRegister">
+    <text>注册</text>
+  </button>
+  <button bindtap="gotoForgetPwd" id="btnForgetPwd">
+    <text>忘记密码?</text>
+  </button>
+</view>

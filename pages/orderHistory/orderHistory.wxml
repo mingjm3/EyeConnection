@@ -1,0 +1,21 @@
+<view>
+ <scroll-view scroll-x="true" style=" white-space: nowrap; display: flex">
+ <view class="table">
+  <view class="tr bg-header">
+   <view class="th">医生姓名</view>
+   <view class="th">时间</view>
+   <view class="th">新回复</view>
+   <view class="th">详情</view>
+  </view>
+  <view class="tr bg-items" wx:for = "{{items}}" wx:key=""> 
+    <text class="td">{{item.doctorName}}</text>  
+    <text class="td">{{item.time}}</text>
+    <text class="td">{{item.flag}}</text>
+    <navigator url="/pages/orderDetail/orderDetail?_id={{item._id}}">
+        查看详情
+    </navigator>
+  </view>
+ </view>
+ </scroll-view>
+</view>
+

@@ -1,0 +1,38 @@
+#total{
+  width:100%;
+  height:1300rpx;
+  background-color: rgb(245,245,245);
+}
+
+#drugName{
+  width:100%;
+  height:125rpx;
+  background-color: white;
+  position: relative;
+  top:20rpx;
+}
+#drugName text{
+  position: relative;
+  left:40rpx;
+  top:40rpx;
+  color: rgb(143, 143, 143);
+}
+#drugName input{
+    width:400rpx;
+    height:80rpx;
+    margin-left: 200rpx;
+    position: relative;
+    bottom: 25rpx;
+}
+
+#btnSearch{
+  position: relative;
+  top:50rpx;
+  background-color:#40a9ff;
+  width:600rpx;
+  border-radius: 50rpx;
+}
+#btnSearch text{
+  color:white;
+  font-size: 39rpx;
+}

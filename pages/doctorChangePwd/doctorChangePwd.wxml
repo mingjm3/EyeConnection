@@ -1,0 +1,14 @@
+<view id="total">
+  <form bindsubmit="changePwd">
+    <view id="newPwd">
+      <text>新密码</text>
+      <input type="password" name="newPwd" placeholder="输入您的新密码" bindblur="checkPwd"></input>
+    </view>
+    <view id="ensureNewPwd">
+      <text>确认密码</text>
+      <input type="password" name="ensureNewPwd" placeholder="再次输入您的新密码" bindblur="checkPwd"></input>
+    </view>
+    <button id="btnChangePwd" form-type="submit"><text>确认修改</text></button>
+  </form>
+</view>
+

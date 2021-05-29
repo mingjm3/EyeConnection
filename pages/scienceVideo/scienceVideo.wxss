@@ -1,0 +1,13 @@
+.science_video{
+  position: relative;
+  width: 100%;
+  height: 420rpx;
+}
+
+.newsBlock .newsMain .text{
+  width: 700rpx;
+  font-size: 35rpx;
+  color: gray;
+  padding: 35rpx;
+}
+

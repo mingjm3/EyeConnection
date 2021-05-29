@@ -1,0 +1,19 @@
+<view id="total">
+  <form bindsubmit="verify">
+    <view id="doctorID">
+      <text>医师号</text>
+      <input type="text" name="username" placeholder="输入您的医师号"></input>
+    </view>
+    <view id="phone">
+      <text>手机号</text>
+      <input type="phone" name="phone" placeholder="请输入您的手机号"></input>
+    </view>
+    <view id="getPwd">
+      <text>{{getPwd}}</text>
+    </view>
+    <button id="btnVerify" form-type="submit">
+      <text>验证</text>
+    </button>
+  </form>
+</view>
+

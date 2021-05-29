@@ -1,0 +1,101 @@
+#total{
+  width:100%;
+  height:1300rpx;
+  background-color: rgb(245,245,245);
+}
+
+#username{
+  width:100%;
+  height:125rpx;
+  background-color: white;
+  position: relative;
+  top:20rpx;
+}
+#username text{
+  position: relative;
+  left:40rpx;
+  top:40rpx;
+  color: rgb(143, 143, 143);
+}
+#username input{
+    width:400rpx;
+    height:80rpx;
+    margin-left: 200rpx;
+    position: relative;
+    bottom: 25rpx;
+}
+
+#pwd{
+  width:100%;
+  height:125rpx;
+  background-color: white;
+  position: relative;
+  top:20rpx;
+}
+#pwd text{
+  position: relative;
+  left:40rpx;
+  top:40rpx;
+  color: rgb(143, 143, 143);
+}
+#pwd input{
+  width:400rpx;
+  height:80rpx;
+  margin-left: 200rpx;
+  position: relative;
+  bottom: 25rpx;
+}
+
+#ensurePwd{
+  width:100%;
+  height:125rpx;
+  background-color: white;
+  position: relative;
+  top:20rpx;
+}
+#ensurePwd text{
+  position: relative;
+  left:40rpx;
+  top:40rpx;
+  color: rgb(143, 143, 143);
+}
+#ensurePwd input{
+  width:400rpx;
+  height:80rpx;
+  margin-left: 200rpx;
+  position: relative;
+  bottom: 25rpx;
+}
+
+#phone{
+  width:100%;
+  height:125rpx;
+  background-color: white;
+  position: relative;
+  top:20rpx;
+}
+#phone text{
+  position: relative;
+  left:40rpx;
+  top:40rpx;
+  color: rgb(143, 143, 143);
+}
+#phone input{
+  width:400rpx;
+  height:80rpx;
+  margin-left: 200rpx;
+  position: relative;
+  bottom: 25rpx;
+}
+
+#btnRegister{
+  position: relative;
+  top:50rpx;
+  background-color:#40a9ff;
+  width:600rpx;
+  border-radius: 50rpx;
+}
+#btnRegister text{
+  color:white;
+  font-size: 39rpx;
+}

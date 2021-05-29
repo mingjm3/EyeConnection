@@ -1,0 +1,79 @@
+{
+  "pages":[
+    "pages/login/login",
+    "pages/home/home",
+    "pages/question/question",
+    "pages/user/user", 
+    "pages/knowledge/knowledge",
+    "pages/disease/disease",
+    "pages/hospital/hospital",
+    "pages/scienceVideo/scienceVideo",
+    "pages/medicine/medicine",
+    "pages/medicineDetail/medicineDetail",
+    "pages/register/register",
+    "pages/forgetPwd/forgetPwd",
+    "pages/changePwd/changePwd",
+    "pages/feedback/feedback",
+    "pages/money/money",
+    "pages/order/order",
+    "pages/orderHistory/orderHistory",
+    "pages/orderDetail/orderDetail",
+    "pages/doctorLogin/doctorLogin",
+    "pages/doctorHome/doctorHome",
+    "pages/doctorRegister/doctorRegister",
+    "pages/doctorForgetPwd/doctorForgetPwd",
+    "pages/doctorMoney/doctorMoney",
+    "pages/myPatient/myPatient",
+    "pages/myPatientDetail/myPatientDetail",
+    "pages/doctorChangePwd/doctorChangePwd",
+    "pages/test/test"
+  ],
+  "window":{
+    "backgroundTextStyle":"dark",
+    "navigationBarBackgroundColor": "#40a9ff",
+    "navigationBarTitleText": "Eye Connection",
+    "navigationBarTextStyle":"white",
+    "pageOrientation": "auto",
+    "enablePullDownRefresh":true
+  },
+  "tabBar": {
+    "selectedColor": "#228be6",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "/icon/home.png",
+        "selectedIconPath": "/icon/home_selected.png"
+      },
+      {
+        "pagePath": "pages/question/question",
+        "text": "就诊",
+        "iconPath": "/icon/question.png",
+        "selectedIconPath": "/icon/question_selected.png"
+      },
+      {
+        "pagePath": "pages/knowledge/knowledge",
+        "text": "知识库",
+        "iconPath": "/icon/knowledge.png",
+        "selectedIconPath": "/icon/knowledge_selected.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "/icon/user.png",
+        "selectedIconPath": "/icon/user_selected.png"
+      }
+    ]
+  },
+
+  "permission": {
+    "scope.userLocation": {
+      "desc": "该小程序将使用您的位置"
+    }
+  },
+
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,99 @@
+.slideShow{
+    width: 100%;
+    height: 410rpx;
+    border: 1px;
+}
+
+.slideShow image{
+    width: 100%;
+    height: 400rpx;
+}
+
+.slideShow navigator{
+    width: 100%;
+    height: 400rpx;
+}
+
+.guideBar .box{
+    display: flex;
+    padding: 30rpx 0;
+}
+
+.guideBar navigator{
+    text-align: center;
+    width: 200rpx;
+}
+
+.guideBar .picture{
+    width: 81rpx;
+    height: 81rpx;
+}
+
+.guideBar .text{
+    font-size: 25rpx;
+}
+
+.newsBlock .newsBlockTitle{
+    display: flex;
+    justify-content: space-between;
+    padding: 15rpx;
+}
+
+.newsBlock .newsBlockTitle text{
+    font-size: 30rpx;
+}
+
+.newsBlock .newsBlockTitle navigator{
+    font-size: 25rpx;
+    color: #bdc3c7;
+}
+
+.newsBlock .newsMain{
+    padding: 0 30rpx
+}
+
+.newsBlock .newsItem{
+    display: flex;
+    padding: 5rpx 0;
+    border:1rpx #bdc3c7;
+    justify-content:space-between;
+}
+
+.newsItem .picture{
+    width: 230rpx;
+    height: 150rpx;
+}
+
+.newsItem .picture image{
+    width: 100%;
+    height: 100%;
+}
+
+.newsItem .text{
+    width: 440rpx;
+}
+
+.newsItem .text .title{
+    font-size: 28rpx;
+}
+
+.newsItem .text .info{
+    font-size: 25rpx;
+    color: gray;
+    padding: 10rpx;
+}
+
+.footer{
+    padding:5rpx 0;
+    text-align: center;
+}
+
+.footer image{
+    width: 75rpx;
+    height: 132rpx;
+}
+
+.footer .text{
+    font-size: 20rpx;
+    color: gray;
+}

@@ -1,0 +1,12 @@
+<view>
+  <image src='{{drugImg}}'></image>
+</view>
+<view>
+  药品名：{{drugName}}
+</view>
+<view>
+  药品注册号：{{drugID}}
+</view>
+<view>
+  描述：{{drugDes}}
+</view>

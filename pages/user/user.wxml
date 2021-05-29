@@ -1,0 +1,99 @@
+<!--用户头像和昵称-->
+<view class="userInformation">
+  <view class="userInfomation-avatar">
+    <open-data type="userAvatarUrl" ></open-data>
+  </view>
+  <view class="userInformation-nickname">
+    {{username}}
+  </view>
+</view>
+<!--间隔灰横条-->
+<view class="graydivide"></view>
+<!--支付-->
+<navigator url="/pages/money/money">
+  <view class='function'>
+    <view style="width:100%">
+      <view class="functioninformation"><!--左边图片&文字-->
+        <view class="left-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/money.png"></image>
+        </view>
+        <view class="text">支付</view><!--文字-->
+        <view class="right-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/right_arrow.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</navigator>
+<!--间隔灰横条-->
+<view class="graydivide"></view>
+<!--就诊历史-->
+<navigator url="/pages/orderHistory/orderHistory">
+  <view class='function'>
+    <view style="width:100%">
+      <view class="functioninformation"><!--左边图片&文字-->
+        <view class="left-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/order.png"></image>
+        </view>
+        <view class="text">就诊历史</view><!--文字-->
+        <view class="right-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/right_arrow.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</navigator>
+<!--间隔白横线-->
+<view class="whitedivide"></view>
+<!--修改密码-->
+<navigator url="/pages/changePwd/changePwd">
+  <view class='function'>
+    <view style="width:100%">
+      <view class="functioninformation"><!--左边图片&文字-->
+        <view class="left-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/changePwd.png"></image>
+        </view>
+        <view class="text">修改密码</view><!--文字-->
+        <view class="right-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/right_arrow.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</navigator>
+<!--间隔白横线-->
+<view class="whitedivide"></view>
+<!--反馈-->
+<navigator url="/pages/feedback/feedback">
+  <view class='function'>
+    <view style="width:100%">
+      <view class="functioninformation"><!--左边图片&文字-->
+        <view class="left-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/complaint.png"></image>
+        </view>
+        <view class="text">反馈</view><!--文字-->
+        <view class="right-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/right_arrow.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</navigator>
+<!--间隔灰横条-->
+<view class="graydivide"></view>
+<!--退出-->
+<navigator bindtap="exitSys">
+  <view class='function'>
+    <view style="width:100%">
+      <view class="functioninformation"><!--左边图片&文字-->
+        <view class="left-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/exit.png"></image>
+        </view>
+        <view class="text">退出</view><!--文字-->
+        <view class="right-icon"><!--图片-->
+          <image class="icon-picture" src="/icon/right_arrow.png"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</navigator>

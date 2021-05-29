@@ -1,0 +1,46 @@
+<!--导诊栏-->
+<scroll-view class="guideBar" scroll-x>
+    <view class="box">
+        <navigator url="/pages/disease/disease">
+            <image class="picture" src="/icon/disease.png"></image>
+            <view class="text">查疾病</view>
+        </navigator>
+        <navigator url="/pages/hospital/hospital">
+            <image class="picture" src="/icon/hospital.png"></image>
+            <view class="text">附近医院</view>
+        </navigator>
+        <navigator url="/pages/scienceVideo/scienceVideo">
+            <image class="picture" src="/icon/video.png"></image>
+            <view class="text">科普视频</view>
+        </navigator>
+        <navigator url="/pages/medicine/medicine">
+            <image class="picture" src="/icon/drug.png"></image>
+            <view class="text">用药查询</view>
+        </navigator>
+    </view>
+</scroll-view>
+
+<!--眼科科普文章-->
+<view class="newsBlock">
+    <view class="newsBlockTitle">
+        <text>科普文章</text>
+        <navigator url="/pages/test/test">更多>></navigator>
+    </view>
+    <view class="newsMain">
+        <navigator class="newsItem" wx:for="{{5}}" url="/pages/test/test"> 
+            <view class="picture">
+                <image src="/images/article.png"></image>
+            </view>
+            <view class="text">
+                <view class="title">
+                    这是科普文章测试   
+                </view>
+                <view class="info">
+                    作者：XX
+                </view>
+            </view>
+        </navigator>
+    </view>
+</view>
+
+

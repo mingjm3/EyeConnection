@@ -1,0 +1,13 @@
+<!--眼科科普文章-->
+<view class="newsBlock">
+    <view class="newsMain">
+        <navigator class="newsItem" wx:for="{{5}}"> 
+            <view class="scienceVideo">
+                <video src="cloud://clould-system-3gfn78g245962f54.636c-clould-system-3gfn78g245962f54-1305162385/video/eog.mp4" controls="true" show-play-btn="true"  ></video>
+            </view>
+            <view class="text">
+                这是科普视频       作者：XX
+            </view>
+        </navigator>
+    </view>
+</view>

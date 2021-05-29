@@ -1,0 +1,176 @@
+{
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": false,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": false,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": true,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "enableEngineNative": false,
+    "bundle": false,
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.15.0",
+  "appid": "wx607b75eea0bf2fd2",
+  "projectname": "EyeConnection",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
+  "isGameTourist": false,
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/user/user",
+          "pathName": "pages/user/user",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/changePwd/changePwd",
+          "pathName": "pages/changePwd/changePwd",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/feedback/feedback",
+          "pathName": "pages/feedback/feedback",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/money/money",
+          "pathName": "pages/money/money",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/order/order",
+          "pathName": "pages/order/order",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/orderHistory/orderHistory",
+          "pathName": "pages/orderHistory/orderHistory",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/home/home",
+          "pathName": "pages/home/home",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/register/register",
+          "pathName": "pages/register/register",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/doctorLogin/doctorLogin",
+          "pathName": "pages/doctorLogin/doctorLogin",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/doctorRegister/doctorRegister",
+          "pathName": "pages/doctorRegister/doctorRegister",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/doctorForgetPwd/doctorForgetPwd",
+          "pathName": "pages/doctorForgetPwd/doctorForgetPwd",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/doctorHome/doctorHome",
+          "pathName": "pages/doctorHome/doctorHome",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/myPatient/myPatient",
+          "pathName": "pages/myPatient/myPatient",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/myPatient/myPatient",
+          "pathName": "pages/myPatient/myPatient",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/orderDetail/orderDetail",
+          "pathName": "pages/orderDetail/orderDetail",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/myPatient/myPatient",
+          "pathName": "pages/myPatient/myPatient",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/myPatientDetail/myPatientDetail",
+          "pathName": "pages/myPatientDetail/myPatientDetail",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/medicine/medicine",
+          "pathName": "pages/medicine/medicine",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

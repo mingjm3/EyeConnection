@@ -1,0 +1,11 @@
+<view id="total">
+  <form bindsubmit="search">
+    <view id="drugName">
+      <text>药品名</text>
+      <input type="text" name="drugName" placeholder="输入药品名" bindblur="checkUsername"></input>
+    </view>
+    <button id="btnSearch" form-type="submit">
+      <text>查询</text>
+    </button>
+  </form>
+</view>
