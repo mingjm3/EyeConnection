@@ -3,7 +3,7 @@ App({
     //全局初始化云服务
     wx.cloud.init({
       //用云ID配置环境
-      env:"clould-system-3gfn78g245962f54"
+      env:"clould-system-id"
     });
   },
   
