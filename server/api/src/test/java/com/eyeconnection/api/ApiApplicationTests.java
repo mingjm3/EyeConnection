@@ -1,10 +1,10 @@
-package com.eyeconnection.server;
+package com.eyeconnection.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerApplicationTests {
+class ApiApplicationTests {
 
 	@Test
 	void contextLoads() {
