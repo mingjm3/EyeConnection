@@ -1,0 +1,421 @@
+openapi: 3.0.0
+
+servers:
+  - description: API Server
+    url: http://localhost:8081/
+
+info:
+  description: EyeConnection APIs reference
+  version: "1.0.0"
+  title: EyeConnection service APIs
+
+tags:
+  - name: users
+    description: Available to users
+  - name: doctors
+    description: Available to doctors
+  - name: developers
+    description: Available to developers
+
+paths:
+  /sign_up:
+    post:
+      description: create new users in system
+      tags: 
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: example@email.com
+                password:
+                  type: string
+                  example: password123
+                last_name:
+                  type: string
+                  example: White
+                first_name:
+                  type: string
+                  example: Mike
+                zip_code:
+                  type: integer
+                  example: 10011
+        required: true
+      responses:
+        "201":
+          description: successfully created new user
+        "202":
+          description: created new user failed
+
+  /log_in?type={type}:
+    post:
+      description: users / doctors log into system
+      tags: 
+      - users
+      - doctors
+      parameters:
+      - in: path
+        name: type
+        schema:
+          type: integer
+        required: true
+        description: type equal to 0 or 1 for users or doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  type: string
+                  example: example@email.com
+                password:
+                  type: string
+                  example: password123
+        required: true
+      responses:
+        "200":
+          description: successfully log in
+        "202":
+          description: log in failed
+  
+  /search_by_condition:
+    post:
+      description: user search available doctors according to conditions
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                city:
+                  type: string
+                  example: Boston
+                state:
+                  type: string
+                  example: MA
+                zip_code:
+                  type: integer
+                  example: 10011
+                category:
+                  type: string
+                  example: Dentist
+                support_online:
+                  type: boolean
+                  example: true
+                available_date:
+                  type: array
+                  example: {"03-01-2015", "03-02-2015"}
+      responses:
+        "200":
+          description: results of user search
+          content: 
+            application/json:
+              schema:
+                properties:
+                  doctors_list:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        last_name:
+                          type: string
+                        first_name:
+                          type: string
+                        rate:
+                          type: integer
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        available_date:
+                          type: array
+                        role:
+                          type: string
+                        portrait:
+                          type: string
+                        support_online:
+                          type: boolean
+                    example:
+                      - email: green.white@gmail.com
+                        last_name: white
+                        first_name: green
+                        rate: 5.0
+                        address: 101th Street, Building 1
+                        city: Boston
+                        state: MA
+                        available_date: ["2023-01-01 13:00", "2023-02-02 13:00"]
+                        role: Dentist
+                        portrait: "/portrait_img/Ek2789fbh"
+                        support_online: true
+                      - email: david.wang@gmail.com
+                        last_name: wang
+                        first_name: david
+                        rate: 4.1
+                        address: 11th Street, Building 2
+                        city: Boston
+                        state: MA
+                        available_date: ["2023-01-01 13:00", "2023-02-02 13:00"]
+                        role: Optometryist
+                        portrait: "/portrait_img/AKING2877"
+                        support_online: false
+
+  /make_appointment:
+    post:
+      description: a user make an appointment with a doctor
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/make_appointment_body'
+        required: true
+      responses:
+        "200":
+          description: make an appointment successfully
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/confirm_appointment_body'
+        "201":
+          description: make an appointment failed
+
+  /show_appointment_by_sysid?sysid={sysid}:
+    get:
+      description: show appointment information for a user or a doctor
+      parameters:
+      - in: path
+        name: sysid
+        schema:
+          type: string
+        required: true
+      tags:
+      - users
+      - doctors
+      responses:
+        "200":
+          description: show appointment information
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/confirm_appointment_body'
+
+  /query_appointment?appointment_id={id}:
+    get:
+      description: query appointment information by appointment id
+      parameters:
+      - in: path
+        name: appointment_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - users
+      - doctors
+      responses:
+        "200":
+          description: show information
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/confirm_appointment_body'
+
+  /get_doctor_profile?sysid={sysid}:
+    get:
+      description: get doctor profile information for rendering
+      parameters:
+      - in: path
+        name: sysid
+        schema:
+          type: string
+        required: true
+      tags:
+      - developers
+      responses:
+        "200":
+          description: show doctor profile information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doctor'
+  
+  /get_user_profile?sysid={sysid}:
+    get:
+      description: get user profile information for rendering
+      parameters:
+      - in: path
+        name: sysid
+        schema:
+          type: string
+        required: true
+      tags:
+      - developers
+      responses:
+        "200":
+          description: show user profile information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+  /update_available_time:
+    put:
+      description: update available time for doctors
+      tags:
+      - doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                sys_id: 
+                  type: string
+                  example: EA930233
+                available_date:
+                  type: array
+                  example: ["2023-03-20", "2023-03-21"]
+      responses:
+        "200":
+          description: update available time successfully
+
+  /cancel_appointment:
+    delete:
+      description: cancel an appointment
+      tags:
+      - users
+      - doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                appointment_id: 
+                  type: string
+                  example: EA930233
+                sender_sys_id:
+                  type: string
+                  example: US13344
+                receiver_sys_id:
+                  type: string
+                  example: DO20388
+      responses:
+        "204":
+          description: cancel the appointment successful
+
+components:
+  schemas:
+    user:
+      properties:
+        sys_id:
+          type: string
+          example: 0023AET976
+        email:
+          type: string
+          example: example@email.com
+        password:
+          type: string
+          example: password123
+        last_name:
+          type: string
+          example: White
+        first_name:
+          type: string
+          example: Mike
+        zip_code:
+          type: integer
+          example: 10011
+
+    doctor:
+      properties:
+        sys_id:
+          type: string
+          example: 0023AET9
+        email:
+          type: string
+          example: example@email.com
+        password:
+          type: string
+          example: password123
+        last_name:
+          type: string
+          example: Green
+        first_name:
+          type: string
+          example: Wiley
+        zip_code:
+          type: integer
+          example: 10011
+        rate:
+          type: integer
+          example: 4.8
+        address:
+          type: string
+          example: 106th Street, Building 1st
+        city:
+          type: string
+          example: Boston
+        state:
+          type: string
+          example: MA
+        available_date:
+          type: array
+          example: {"03-01-2015", "03-02-2015", "03-03-2015"}
+        role:
+          type: string
+          example: Dentist
+        portrait:
+          type: string
+          example: "/green-wiley-portrait"
+        support_online:
+          type: boolean
+          example: true
+    
+    confirm_appointment_body:
+      properties:
+        appointment_id:
+          type: string
+          example: 3DEFA6891
+        user_id:
+          type: string
+          example: 0023AET976
+        doctor_id:
+          type: string
+          example: 0023AET9
+        user_full_name:
+          type: string
+          example: Mike White
+        doctor_full_name:
+          type: string
+          example: Wiley Green
+        date:
+          type: string
+          example: "2023-01-03 13:00"
+        online_meeting:
+          type: string
+          example: "https://zoom.us/13edfeerc"
+        address:
+          type: string
+          example: "123 Main Street, Boston, MA"
+    
+    make_appointment_body:
+      properties:
+        user_id:
+          type: string
+          example: 0023AET976
+        doctor_id:
+          type: string
+          example: 0023AET9
+        date:
+          type: string
+          example: "2023-01-03 13:00"
+        online:
+          type: boolean
+          example: true
