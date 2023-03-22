@@ -2,9 +2,9 @@ openapi: 3.0.0
 
 servers:
   - description: API Server
-    url: http://localhost:8080/
+    url: localhost:8080/
 
-info:
+info: 
   description: EyeConnection APIs reference
   version: "1.0.0"
   title: EyeConnection service APIs
