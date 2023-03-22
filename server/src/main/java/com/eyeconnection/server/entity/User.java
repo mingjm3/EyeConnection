@@ -35,7 +35,41 @@ public class User {
         this.zipCode = zipCode;
     }
 
+    public User(String email, String password, String firstName, String lastName, String zipCode) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.zipCode = zipCode;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public Long getSysId() {
+        return sysId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    @Override
+    public String toString() {
+        return "User [sysId=" + sysId + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", zipCode=" + zipCode + "]";
     }
 }
