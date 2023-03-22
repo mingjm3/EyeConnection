@@ -24,11 +24,18 @@ public class User {
     @Column(name = "zip_code")
     private String zipCode;
 
-    public User(String email, String password, String firstName, String lastName, String zipCode) {
+    public User() {}
+
+    public User(Long sysId, String email, String password, String firstName, String lastName, String zipCode) {
+        this.sysId = sysId;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.zipCode = zipCode;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
