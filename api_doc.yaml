@@ -34,13 +34,13 @@ paths:
                 password:
                   type: string
                   example: password123
-                last_name:
+                lastName:
                   type: string
                   example: White
-                first_name:
+                firstName:
                   type: string
                   example: Mike
-                zip_code:
+                zipCode:
                   type: integer
                   example: 10011
         required: true
@@ -314,22 +314,22 @@ components:
   schemas:
     user:
       properties:
-        sys_id:
-          type: string
-          example: 0023AET976
+        sysId:
+          type: integer
+          example: 22
         email:
           type: string
           example: example@email.com
         password:
           type: string
           example: password123
-        last_name:
+        lastName:
           type: string
           example: White
-        first_name:
+        firstName:
           type: string
           example: Mike
-        zip_code:
+        zipCode:
           type: integer
           example: 10011
 
