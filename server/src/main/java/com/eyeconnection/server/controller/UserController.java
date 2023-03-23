@@ -1,5 +1,7 @@
 package com.eyeconnection.server.controller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +36,22 @@ public class UserController {
         User savedUser = userRepo.save(newUser);
         logger.info(String.format("User saved: %s", savedUser.toString()));
         return ResponseEntity.status(201).body("User created successfully " + savedUser.getEmail());
+    }
+
+    @PostMapping("/user_log_in")
+    public ResponseEntity<?> userLogIn(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String password = requestBody.get("password");
+        logger.info(String.format("Request to /user_log_in: %s", email));
+        User findResult = userRepo.findByEmail(email);
+        
+        //check if user is existing and password is correct
+        if(findResult == null || !findResult.getPassword().equals(password)) {
+            logger.error(String.format("User log in failed: %s ", email));
+            return ResponseEntity.status(401).body("Email or password incorrect");
+        }
+
+        logger.info(String.format("User logged in successfully: %s", email));
+        return ResponseEntity.status(200).body("User logged in successfully");
     }
 }
