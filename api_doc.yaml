@@ -50,25 +50,17 @@ paths:
         "202":
           description: created new user failed
 
-  /log_in?type={type}:
+  /user_log_in:
     post:
-      description: users / doctors log into system
+      description: users log into system
       tags: 
       - users
-      - doctors
-      parameters:
-      - in: path
-        name: type
-        schema:
-          type: integer
-        required: true
-        description: type equal to 0 or 1 for users or doctors
       requestBody:
         content:
           application/json:
             schema:
               properties:
-                id:
+                email:
                   type: string
                   example: example@email.com
                 password:
@@ -78,7 +70,7 @@ paths:
       responses:
         "200":
           description: successfully log in
-        "202":
+        "401":
           description: log in failed
   
   /search_by_condition:
