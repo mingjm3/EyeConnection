@@ -6,23 +6,23 @@ servers:
 
 info: 
   description: EyeConnection APIs reference
-  version: "1.0.0"
+  version: "2.0.0"
   title: EyeConnection service APIs
 
 tags:
-  - name: users
+  - name: user
     description: Available to users
-  - name: doctors
+  - name: doctor
     description: Available to doctors
-  - name: developers
-    description: Available to developers
+  - name: system
+    description: Available to system
 
 paths:
   /sign_up:
     post:
       description: create new users in system
       tags: 
-      - users
+      - user
       requestBody:
         content:
           application/json:
@@ -54,7 +54,7 @@ paths:
     post:
       description: users log into system
       tags: 
-      - users
+      - user
       requestBody:
         content:
           application/json:
@@ -73,11 +73,108 @@ paths:
         "401":
           description: log in failed
   
+  /doctor_log_in:
+    post:
+      description: users log into system
+      tags: 
+      - doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: example@email.com
+                password:
+                  type: string
+                  example: password123
+        required: true
+      responses:
+        "200":
+          description: successfully log in
+        "401":
+          description: log in failed
+  
+  /update_available_time:
+    put:
+      description: update available time for doctors
+      tags:
+      - doctor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                sys_id: 
+                  type: string
+                  example: EA930233
+                available_date:
+                  type: array
+                  example: ["2023-03-20", "2023-03-21"]
+      responses:
+        "200":
+          description: update available time successfully
+
+  /confirm_appointment:
+    post:
+      description: confirm appointment request
+      tags: 
+      - doctor
+      requestBody:
+        content:
+          application/json:
+           schema:
+            properties:
+              appointment_id:
+                type: string
+                example: AP123456
+              doctor_sys_id: 
+                type: string
+                example: EA930233
+              patient_sys_id:
+                type: string
+                example: EA930233
+              appointment_status:
+                type: string
+                example: Finished, Pending, Approved, Cancelled
+              online:
+                type: boolean
+                example: true
+              online_meeting:
+                type: string
+                example: "https://zoom.us/13edfeerc"
+              appointment_date:
+                example: "2023-01-03 13:00"
+              confirmation_date:
+                example: "2023-01-01 12:00"
+              address:
+                type: string
+                example: "1st Memories St, San Francisco, CA"
+              patient_email:
+                type: string
+                example: "hokey@gmail.com"
+              patient_phone:
+                type: string
+                example: "201-111-2342"
+              doctor_email:
+                type: string
+                example: "green@gmail.com"
+              doctor_phone:
+                type: string
+                example: "201-111-2342"
+              notes:
+                type: string
+                example: "No eating after 8:00 PM"
+      responses:
+        "200":
+          description: Confiem appointment successfully
+
   /search_by_condition:
     post:
       description: user search available doctors according to conditions
       tags:
-      - users
+      - system
       requestBody:
         content:
           application/json:
@@ -161,28 +258,32 @@ paths:
 
   /make_appointment:
     post:
-      description: a user make an appointment with a doctor
+      description: a patient make an appointment with a doctor
       tags:
-      - users
+      - user
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/make_appointment_body'
-        required: true
+              properties:
+                patient_id:
+                  type: string
+                  example: EA912239
+                doctor_id:
+                  type: string
+                  example: EA912233
+                appointment_date:
+                  example: "2023-01-01 13:00"
+                online:
+                  type: boolean
+                  example: true
       responses:
         "200":
           description: make an appointment successfully
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/confirm_appointment_body'
-        "201":
-          description: make an appointment failed
 
-  /show_appointment_by_sysid?sysid={sysid}:
+  /all_appointments?sysid={sysid}:
     get:
-      description: show appointment information for a user or a doctor
+      description: show all appointments
       parameters:
       - in: path
         name: sysid
@@ -190,19 +291,21 @@ paths:
           type: string
         required: true
       tags:
-      - users
-      - doctors
+      - system
       responses:
         "200":
           description: show appointment information
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/confirm_appointment_body'
+                properties:
+                  appointments:
+                    type: array
+                    example: ["appointment1", "appointment2", "appointment3"]
 
-  /query_appointment?appointment_id={id}:
+  /appointments_details?appointment_id={appointment_id}:
     get:
-      description: query appointment information by appointment id
+      description: show appointment details
       parameters:
       - in: path
         name: appointment_id
@@ -210,19 +313,18 @@ paths:
           type: string
         required: true
       tags:
-      - users
-      - doctors
+      - system
       responses:
         "200":
-          description: show information
+          description: show appointment details
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/confirm_appointment_body'
+                $ref: '#/components/schemas/appointment'
 
-  /get_doctor_profile?sysid={sysid}:
+  /profile?sysid={sysid}:
     get:
-      description: get doctor profile information for rendering
+      description: get profile information for rendering
       parameters:
       - in: path
         name: sysid
@@ -230,77 +332,55 @@ paths:
           type: string
         required: true
       tags:
-      - developers
+      - system
       responses:
         "200":
-          description: show doctor profile information
+          description: show profile information
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/doctor'
-  
-  /get_user_profile?sysid={sysid}:
-    get:
-      description: get user profile information for rendering
-      parameters:
-      - in: path
-        name: sysid
-        schema:
-          type: string
-        required: true
-      tags:
-      - developers
+                properties:
+                  email:
+                    type: string
+                    example: green@gmail.com
+                  lastName:
+                    type: string
+                    example: White
+                  firstName:
+                    type: string
+                    example: Mike
+                  portrait:
+                    type: string
+                    example: "/green-wiley-portrait"
+            
+  /notification:
+    post:
+      description: push a notification to the taget user or doctor according to the sys_id
+      tags: 
+      - system
       responses:
-        "200":
-          description: show user profile information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
+          "200":
+            description: push a notification successfully
 
-  /update_available_time:
+  /update_appointment_status:
     put:
-      description: update available time for doctors
+      description: update the status of an appointment
       tags:
-      - doctors
+      - system
       requestBody:
         content:
           application/json:
             schema:
               properties:
-                sys_id: 
+                appointment_id:
                   type: string
                   example: EA930233
-                available_date:
-                  type: array
-                  example: ["2023-03-20", "2023-03-21"]
-      responses:
-        "200":
-          description: update available time successfully
-
-  /cancel_appointment:
-    delete:
-      description: cancel an appointment
-      tags:
-      - users
-      - doctors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                appointment_id: 
+                new_status:
                   type: string
-                  example: EA930233
-                sender_sys_id:
-                  type: string
-                  example: US13344
-                receiver_sys_id:
-                  type: string
-                  example: DO20388
+                  example: Canceled
       responses:
         "204":
-          description: cancel the appointment successful
+          description: update the status successfully
 
 components:
   schemas:
@@ -370,44 +450,45 @@ components:
           type: boolean
           example: true
     
-    confirm_appointment_body:
+    appointment:
       properties:
-        appointment_id:
-          type: string
-          example: 3DEFA6891
-        user_id:
-          type: string
-          example: 0023AET976
-        doctor_id:
-          type: string
-          example: 0023AET9
-        user_full_name:
-          type: string
-          example: Mike White
-        doctor_full_name:
-          type: string
-          example: Wiley Green
-        date:
-          type: string
-          example: "2023-01-03 13:00"
-        online_meeting:
-          type: string
-          example: "https://zoom.us/13edfeerc"
-        address:
-          type: string
-          example: "123 Main Street, Boston, MA"
-    
-    make_appointment_body:
-      properties:
-        user_id:
-          type: string
-          example: 0023AET976
-        doctor_id:
-          type: string
-          example: 0023AET9
-        date:
-          type: string
-          example: "2023-01-03 13:00"
-        online:
-          type: boolean
-          example: true
+              appointment_id:
+                type: string
+                example: AP123456
+              doctor_sys_id: 
+                type: string
+                example: EA930233
+              patient_sys_id:
+                type: string
+                example: EA930233
+              appointment_status:
+                type: string
+                example: Finished, Pending, Approved, Cancelled
+              online:
+                type: boolean
+                example: true
+              online_meeting:
+                type: string
+                example: "https://zoom.us/13edfeerc"
+              appointment_date:
+                example: "2023-01-03 13:00"
+              confirmation_date:
+                example: "2023-01-01 12:00"
+              address:
+                type: string
+                example: "1st Memories St, San Francisco, CA"
+              patient_email:
+                type: string
+                example: "hokey@gmail.com"
+              patient_phone:
+                type: string
+                example: "201-111-2342"
+              doctor_email:
+                type: string
+                example: "green@gmail.com"
+              doctor_phone:
+                type: string
+                example: "201-111-2342"
+              notes:
+                type: string
+                example: "No eating after 8:00 PM"

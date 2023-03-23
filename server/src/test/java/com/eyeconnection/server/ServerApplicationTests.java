@@ -1,8 +1,28 @@
 package com.eyeconnection.server;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
+import com.eyeconnection.server.dao.UserRepository;
+import com.eyeconnection.server.entity.User;
+
 class ServerApplicationTests {
 
+    @Autowired
+    private MockMvc mvc;
+
+    @Autowired
+    private UserRepository userRepo;
+
+    @Test
+    public void testSignUp() {
+        User newUser = new User(Long.valueOf(999), "test@email.com", "password", "Jimmy", "Green", "10000");
+        
+        // MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/sign_up")
+        // .content(asJsonString(newUser))
+        // .contentType(MediaType.APPLICATION_JSON)
+        // .accept(MediaType.APPLICATION_JSON))
+        // .andReturn();
+    }
 }
