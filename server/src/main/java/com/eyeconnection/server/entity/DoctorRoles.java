@@ -1,0 +1,19 @@
+package com.eyeconnection.server.entity;
+
+public enum DoctorRoles {
+    DENTIST,
+    PSYCHOLOGIST,
+    DERMATOLOGIST,
+    PHARMACIST,
+    CARDIOLOGIST,
+    UROLOGIST,
+    ENDOCRINOLOGIST,
+    PEDIATRICIAN,
+    NEUROLOGIST,
+    OBSTETRICIANS,
+    GYNECOLOGISTS,
+    OPTOMETRIST,
+    PODIATRIST,
+    LAB,
+    CANCER
+}
