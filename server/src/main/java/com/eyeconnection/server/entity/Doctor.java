@@ -2,6 +2,8 @@ package com.eyeconnection.server.entity;
 
 import java.util.Date;
 
+import com.eyeconnection.server.enums.DoctorRoles;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

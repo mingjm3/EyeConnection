@@ -1,4 +1,4 @@
-package com.eyeconnection.server.entity;
+package com.eyeconnection.server.enums;
 
 public enum AppointmentStatus {
     //Patient make an appointment and wait for doctor's confirmation

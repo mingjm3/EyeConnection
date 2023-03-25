@@ -1,4 +1,4 @@
-package com.eyeconnection.server.entity;
+package com.eyeconnection.server.enums;
 
 public enum DoctorRoles {
     DENTIST,
