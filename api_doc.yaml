@@ -266,10 +266,10 @@ paths:
           application/json:
             schema:
               properties:
-                patient_id:
+                patient_sys_id:
                   type: string
                   example: EA912239
-                doctor_id:
+                doctor_sys_id:
                   type: string
                   example: EA912233
                 appointment_date:
@@ -413,6 +413,9 @@ components:
         email:
           type: string
           example: example@email.com
+        phone:
+          type: string
+          example: 110-123-4567
         password:
           type: string
           example: password123
@@ -463,7 +466,7 @@ components:
                 example: EA930233
               appointment_status:
                 type: string
-                example: Finished, Pending, Approved, Cancelled
+                example: Finished, Pending, Approved, Cancelled, Aborted
               online:
                 type: boolean
                 example: true
@@ -472,23 +475,6 @@ components:
                 example: "https://zoom.us/13edfeerc"
               appointment_date:
                 example: "2023-01-03 13:00"
-              confirmation_date:
-                example: "2023-01-01 12:00"
-              address:
-                type: string
-                example: "1st Memories St, San Francisco, CA"
-              patient_email:
-                type: string
-                example: "hokey@gmail.com"
-              patient_phone:
-                type: string
-                example: "201-111-2342"
-              doctor_email:
-                type: string
-                example: "green@gmail.com"
-              doctor_phone:
-                type: string
-                example: "201-111-2342"
               notes:
                 type: string
                 example: "No eating after 8:00 PM"
