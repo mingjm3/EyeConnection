@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/sign_up")
-    public ResponseEntity<?> signUp(@RequestBody User newUser) {
+    public ResponseEntity<String> signUp(@RequestBody User newUser) {
         logger.info(String.format("Request to /sign_up: %s", newUser.toString()));
         String email = newUser.getEmail();
         User findResult = userRepo.findByEmail(email);
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/user_log_in")
-    public ResponseEntity<?> userLogIn(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<String> userLogIn(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String password = requestBody.get("password");
         logger.info(String.format("Request to /user_log_in: %s", email));
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/make_appointment")
-    public ResponseEntity<?> makeAppointment(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<String> makeAppointment(@RequestBody Map<String, String> requestBody) {
         Long patientSysId = Long.valueOf(requestBody.get("patient_sys_id"));
         Long doctorSysId = Long.valueOf(requestBody.get("doctor_sys_id"));
         LocalDateTime appointmentDate = DateUtils.getDate(requestBody.get("appointment_date"));
