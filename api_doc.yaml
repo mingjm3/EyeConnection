@@ -1,13 +1,11 @@
 openapi: 3.0.0
 
 servers:
-  - description: API Server
-    url: localhost:8080/
+  - url: localhost:8080/
 
 info: 
-  description: EyeConnection APIs reference
-  version: "2.0.0"
-  title: EyeConnection service APIs
+  version: "2.1.0"
+  title: EyeConnection APIs
 
 tags:
   - name: user
@@ -73,6 +71,33 @@ paths:
         "401":
           description: log in failed
   
+  /make_appointment:
+    post:
+      description: a patient make an appointment with a doctor
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                patient_sys_id:
+                  type: number
+                  example: 912239
+                doctor_sys_id:
+                  type: number
+                  example: 912233
+                appointment_date:
+                  example: "2023-01-01 13:00"
+                online:
+                  type: boolean
+                  example: true
+      responses:
+        "201":
+          description: make an appointment successfully
+        "202":
+          description: make an appointment failed
+  
   /doctor_log_in:
     post:
       description: users log into system
@@ -96,7 +121,7 @@ paths:
         "401":
           description: log in failed
   
-  /update_available_time:
+  /update_available_dates:
     put:
       description: update available time for doctors
       tags:
@@ -107,17 +132,17 @@ paths:
             schema:
               properties:
                 sys_id: 
-                  type: string
-                  example: EA930233
-                available_date:
+                  type: number
+                  example: 930233
+                new_available_dates:
                   type: array
-                  example: ["2023-03-20", "2023-03-21"]
+                  example: ["2023-03-20 12:00", "2023-03-21 13:00"]
       responses:
         "200":
           description: update available time successfully
 
   /confirm_appointment:
-    post:
+    put:
       description: confirm appointment request
       tags: 
       - doctor
@@ -127,48 +152,20 @@ paths:
            schema:
             properties:
               appointment_id:
-                type: string
-                example: AP123456
-              doctor_sys_id: 
-                type: string
-                example: EA930233
-              patient_sys_id:
-                type: string
-                example: EA930233
+                type: number
+                example: 123456
               appointment_status:
                 type: string
-                example: Finished, Pending, Approved, Cancelled
-              online:
-                type: boolean
-                example: true
+                example: Approved
               online_meeting:
                 type: string
                 example: "https://zoom.us/13edfeerc"
-              appointment_date:
-                example: "2023-01-03 13:00"
-              confirmation_date:
-                example: "2023-01-01 12:00"
-              address:
-                type: string
-                example: "1st Memories St, San Francisco, CA"
-              patient_email:
-                type: string
-                example: "hokey@gmail.com"
-              patient_phone:
-                type: string
-                example: "201-111-2342"
-              doctor_email:
-                type: string
-                example: "green@gmail.com"
-              doctor_phone:
-                type: string
-                example: "201-111-2342"
               notes:
                 type: string
                 example: "No eating after 8:00 PM"
       responses:
         "200":
-          description: Confiem appointment successfully
+          description: confirm appointment successfully
 
   /search_by_condition:
     post:
@@ -196,8 +193,7 @@ paths:
                   type: boolean
                   example: true
                 available_date:
-                  type: array
-                  example: {"03-01-2015", "03-02-2015"}
+                  example: "2015-03-01 12:00"
       responses:
         "200":
           description: results of user search
@@ -256,30 +252,38 @@ paths:
                         portrait: "/portrait_img/AKING2877"
                         support_online: false
 
-  /make_appointment:
+  /create_notification:
     post:
-      description: a patient make an appointment with a doctor
-      tags:
-      - user
+      description: push a notification to the taget user or doctor according to the sys_id
+      tags: 
+      - system
       requestBody:
         content:
-          application/json:
-            schema:
-              properties:
-                patient_sys_id:
-                  type: string
-                  example: EA912239
-                doctor_sys_id:
-                  type: string
-                  example: EA912233
-                appointment_date:
-                  example: "2023-01-01 13:00"
-                online:
-                  type: boolean
-                  example: true
+            application/json:
+              schema:
+                properties:
+                  notification_id:
+                    type: number
+                    example: 010002981
+                  sender_sys_id:
+                    type: number
+                    example: 3990181
+                  receiver_sys_id:
+                    type: number
+                    example: 93884829
+                  message:
+                    type: object
+                    example: {
+                      title: Appointment updated,
+                      content: Appointment(299032) status has been updated by Dr. White,
+                      time: "2016-01-03 19:00"
+                    }
+                  unread:
+                    type: boolean
+                    example: true
       responses:
-        "200":
-          description: make an appointment successfully
+          "201":
+            description: create a notification successfully
 
   /all_appointments?sysid={sysid}:
     get:
@@ -288,7 +292,7 @@ paths:
       - in: path
         name: sysid
         schema:
-          type: string
+          type: number
         required: true
       tags:
       - system
@@ -303,14 +307,14 @@ paths:
                     type: array
                     example: ["appointment1", "appointment2", "appointment3"]
 
-  /appointments_details?appointment_id={appointment_id}:
+  /appointment_detail?appointment_id={appointment_id}:
     get:
       description: show appointment details
       parameters:
       - in: path
         name: appointment_id
         schema:
-          type: string
+          type: number
         required: true
       tags:
       - system
@@ -329,7 +333,7 @@ paths:
       - in: path
         name: sysid
         schema:
-          type: string
+          type: number
         required: true
       tags:
       - system
@@ -352,15 +356,69 @@ paths:
                   portrait:
                     type: string
                     example: "/green-wiley-portrait"
-            
-  /notification:
-    post:
-      description: push a notification to the taget user or doctor according to the sys_id
-      tags: 
-      - system
+  
+  /get_notification?sysid={sysid}:
+    get:
+      description: get notification for user or doctor with sysid
+      parameters:
+      - in: path
+        name: sysid
+        schema:
+          type: number
+        required: true
+      tags:
+        - system
       responses:
-          "200":
-            description: push a notification successfully
+        "200":
+          description: get notification successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification_id:
+                      type: number
+                      example: 010002981
+                  sender_sys_id:
+                    type: number
+                    example: 3990181
+                  receiver_sys_id:
+                    type: number
+                    example: 93884829
+                  message:
+                    type: object
+                    example: {
+                      title: Appointment updated,
+                      content: Appointment(299032) status has been updated by Dr. White,
+                      time: "2016-01-03 19:00"
+                    }
+                  unread:
+                    type: boolean
+                    example: true
+
+  /get_available_dates?doctor_sys_id={doctor_sys_id}:
+    get:
+      description: get available dates of a doctor with sysid
+      parameters:
+      - in: path
+        name: doctor_sys_id
+        schema:
+          type: number
+        required: true
+      tags:
+        - system
+      responses:
+        "200":
+          description: get notification successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  doctor_sys_id:
+                      type: number
+                      example: 010002981
+                  available_dates:
+                      type: array
+                      example: ["2016-01-03 13:00", "2016-01-05 09:00"]
 
   /update_appointment_status:
     put:
@@ -373,8 +431,8 @@ paths:
             schema:
               properties:
                 appointment_id:
-                  type: string
-                  example: EA930233
+                  type: number
+                  example: 930233
                 new_status:
                   type: string
                   example: Canceled
@@ -386,7 +444,7 @@ components:
   schemas:
     user:
       properties:
-        sysId:
+        sys_id:
           type: integer
           example: 22
         email:
@@ -395,10 +453,10 @@ components:
         password:
           type: string
           example: password123
-        lastName:
+        last_name:
           type: string
           example: White
-        firstName:
+        first_name:
           type: string
           example: Mike
         zipCode:
@@ -440,9 +498,6 @@ components:
         state:
           type: string
           example: MA
-        available_date:
-          type: array
-          example: {"03-01-2015", "03-02-2015", "03-03-2015"}
         role:
           type: string
           example: Dentist
@@ -455,26 +510,56 @@ components:
     
     appointment:
       properties:
-              appointment_id:
-                type: string
-                example: AP123456
-              doctor_sys_id: 
-                type: string
-                example: EA930233
-              patient_sys_id:
-                type: string
-                example: EA930233
-              appointment_status:
-                type: string
-                example: Finished, Pending, Approved, Cancelled, Aborted
-              online:
-                type: boolean
-                example: true
-              online_meeting:
-                type: string
-                example: "https://zoom.us/13edfeerc"
-              appointment_date:
-                example: "2023-01-03 13:00"
-              notes:
-                type: string
-                example: "No eating after 8:00 PM"
+        appointment_id:
+          type: number
+          example: 123456
+        doctor_sys_id: 
+          type: number
+          example: 930233
+        patient_sys_id:
+          type: number
+          example: 930235
+        appointment_status:
+          type: string
+          example: Finished, Pending, Approved, Cancelled, Aborted
+        online:
+          type: boolean
+          example: true
+        online_meeting:
+          type: string
+          example: "https://zoom.us/13edfeerc"
+        appointment_date:
+          example: "2023-01-03 13:00"
+        notes:
+          type: string
+          example: "No eating after 8:00 PM"
+    
+    available_dates:
+      properties:
+        doctor_sys_id:
+          type: number
+          example: 0137819
+        available_date:
+          example: "2023-01-03 13:00"
+
+    notifications:
+      properties:
+        notification_id:
+          type: number
+          example: 123456
+        sender_sys_id:
+          type: number
+          example: 232428
+        receiver_sys_id:
+          type: number
+          example: 2324398
+        message:
+          type: string
+          example: {
+            'title': 'Appointment updated',
+            'content': 'Your application has been updated, doctor approved your request',
+            'time': '2023-01-03 13:00'
+          }
+        unread:
+          type: boolean
+          example: true
