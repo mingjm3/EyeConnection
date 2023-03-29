@@ -1,5 +1,6 @@
 package com.eyeconnection.server.controller;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,14 +12,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.eyeconnection.server.dao.UserRepository;
 import com.eyeconnection.server.entity.User;
+import com.eyeconnection.server.enums.AppointmentStatus;
+import com.eyeconnection.server.service.UserService;
+import com.eyeconnection.server.utils.DateUtils;
 
 @Controller
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserRepository userRepo;
+    private UserService userService;
 
-    public UserController(UserRepository userRepo) {
+    public UserController(UserRepository userRepo, UserService userService) {
         this.userRepo = userRepo;
+        this.userService = userService;
     }
 
     @PostMapping("/sign_up")
@@ -53,5 +59,22 @@ public class UserController {
 
         logger.info(String.format("User logged in successfully: %s", email));
         return ResponseEntity.status(200).body("User logged in successfully");
+    }
+
+    @PostMapping("/make_appointment")
+    public ResponseEntity<?> makeAppointment(@RequestBody Map<String, String> requestBody) {
+        Long patientSysId = Long.valueOf(requestBody.get("patient_sys_id"));
+        Long doctorSysId = Long.valueOf(requestBody.get("doctor_sys_id"));
+        LocalDateTime appointmentDate = DateUtils.getDate(requestBody.get("appointment_date"));
+        Boolean online = Boolean.valueOf(requestBody.get("online"));
+
+        logger.info(String.format("Request to /make_appointment: [%s]", patientSysId));
+
+        AppointmentStatus appointmentStatus = userService.makeAppointment(patientSysId, doctorSysId, appointmentDate, online);
+        
+        if(appointmentStatus.equals(AppointmentStatus.PENDING)) {
+            return ResponseEntity.status(201).body("Make an appointment successfully");
+        }
+        return ResponseEntity.status(202).body("Make an appointment failed");
     }
 }
