@@ -4,7 +4,7 @@ servers:
   - url: localhost:8080/
 
 info: 
-  version: "2.1.0"
+  version: "2.1.1"
   title: EyeConnection APIs
 
 tags:
@@ -131,10 +131,10 @@ paths:
           application/json:
             schema:
               properties:
-                sys_id: 
+                doctor_sys_id: 
                   type: number
                   example: 930233
-                new_available_dates:
+                dates:
                   type: array
                   example: ["2023-03-20 12:00", "2023-03-21 13:00"]
       responses:
@@ -326,7 +326,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/appointment'
 
-  /profile?sysid={sysid}:
+  /profile?sysid={sysid}&type={type}:
     get:
       description: get profile information for rendering
       parameters:
@@ -334,6 +334,12 @@ paths:
         name: sysid
         schema:
           type: number
+        required: true
+      - in: path
+        name: type
+        schema:
+          type: number
+        description: determine what type of sys_id (doctor or user)
         required: true
       tags:
       - system
