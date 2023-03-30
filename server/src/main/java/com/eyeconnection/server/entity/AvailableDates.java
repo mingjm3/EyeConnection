@@ -4,13 +4,15 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "available_dates")
 public class AvailableDates {
-    private @Id @Column(name = "doctor_sys_id") Long doctorSysId;
+    private @Id @GeneratedValue Long id;
+    private @Column(name = "doctor_sys_id") Long doctorSysId;
     private @Column(name = "available_date") LocalDateTime availableDate;
     
     public AvailableDates() {
