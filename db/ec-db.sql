@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appointment` (
-  `appointment_id` bigint NOT NULL AUTO_INCREMENT,
+  `appointment_id` bigint NOT NULL,
   `doctor_sys_id` bigint NOT NULL,
   `patient_sys_id` bigint NOT NULL,
   `appointment_date` datetime DEFAULT NULL,
@@ -31,7 +31,11 @@ CREATE TABLE `appointment` (
   `online` tinyint(1) DEFAULT '0',
   `online_meeting` varchar(255) DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`appointment_id`)
+  PRIMARY KEY (`appointment_id`),
+  KEY `doctor_sys_id` (`doctor_sys_id`),
+  KEY `patient_sys_id` (`patient_sys_id`),
+  CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`doctor_sys_id`) REFERENCES `doctor` (`sys_id`),
+  CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`patient_sys_id`) REFERENCES `user` (`sys_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,8 +45,28 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
+INSERT INTO `appointment` VALUES (552,571,852,'2023-03-30 13:00:00','PENDING',1,NULL,NULL);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `tr_delete_available_date` AFTER INSERT ON `appointment` FOR EACH ROW BEGIN
+    DELETE FROM available_dates 
+    WHERE doctor_sys_id = NEW.doctor_sys_id 
+    AND available_date = NEW.appointment_date;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `appointment_seq`
@@ -62,7 +86,7 @@ CREATE TABLE `appointment_seq` (
 
 LOCK TABLES `appointment_seq` WRITE;
 /*!40000 ALTER TABLE `appointment_seq` DISABLE KEYS */;
-INSERT INTO `appointment_seq` VALUES (1);
+INSERT INTO `appointment_seq` VALUES (651);
 /*!40000 ALTER TABLE `appointment_seq` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +99,7 @@ DROP TABLE IF EXISTS `available_dates`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `available_dates` (
   `doctor_sys_id` bigint NOT NULL,
-  `available_date` datetime DEFAULT NULL
+  `available_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -85,7 +109,7 @@ CREATE TABLE `available_dates` (
 
 LOCK TABLES `available_dates` WRITE;
 /*!40000 ALTER TABLE `available_dates` DISABLE KEYS */;
-INSERT INTO `available_dates` VALUES (571,'2023-03-30 13:00:00'),(571,'2023-03-28 13:00:00');
+INSERT INTO `available_dates` VALUES (571,'2023-08-31 13:00:00'),(572,'2023-03-30 13:00:00');
 /*!40000 ALTER TABLE `available_dates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,6 +173,32 @@ INSERT INTO `doctor_seq` VALUES (1);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notifications` (
+  `notification_id` bigint NOT NULL COMMENT 'Primary Key',
+  `sender_sys_id` bigint DEFAULT NULL,
+  `receiver_sys_id` bigint DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `unread` tinyint DEFAULT '1',
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notifications`
+--
+
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -207,4 +257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-25  6:35:46
+-- Dump completed on 2023-03-30  1:28:31
