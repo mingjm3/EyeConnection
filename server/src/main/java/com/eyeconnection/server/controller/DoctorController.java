@@ -58,8 +58,10 @@ class DoctorController {
         try {
             doctorService.updateAvailableDates(doctorSysId, newAvailabeDates);
         } catch (Exception e) {
+            logger.error(String.format("Updated available dates failed: %s %s ", requestBody.toString(), e.getMessage()));
             return ResponseEntity.status(500).body("Updated available dates failed " + e.getMessage());
         }
+        logger.error(String.format("Updated available dates successfully: %s ", requestBody.toString()));
         return ResponseEntity.status(200).body("Updated available dates successfully");
     }
 
