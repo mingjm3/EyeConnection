@@ -30,18 +30,7 @@ public class UserController {
     @PostMapping("/sign_up")
     public ResponseEntity<String> signUp(@RequestBody User newUser) {
         logger.info(String.format("Request to /sign_up: %s", newUser.toString()));
-        String email = newUser.getEmail();
-        User findResult = userRepo.findByEmail(email);
-        
-        //check if user is already exists
-        if(findResult != null) {
-            logger.warn(String.format("User sign up failed: %s", newUser.toString()));
-            return ResponseEntity.status(202).body("User sign up failed: " + newUser.toString());
-        }
-
-        User savedUser = userRepo.save(newUser);
-        logger.info(String.format("User saved successfully: %s", savedUser.toString()));
-        return ResponseEntity.status(201).body("User created successfully" + savedUser.toString());
+        return userService.signUp(newUser);
     }
 
     @PostMapping("/user_log_in")
