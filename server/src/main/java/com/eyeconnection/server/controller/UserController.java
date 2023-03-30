@@ -38,16 +38,7 @@ public class UserController {
         String email = requestBody.get("email");
         String password = requestBody.get("password");
         logger.info(String.format("Request to /user_log_in: %s", requestBody.toString()));
-        User findResult = userRepo.findByEmail(email);
-        
-        //check if user is existing and password is correct
-        if(findResult == null || !findResult.getPassword().equals(password)) {
-            logger.warn(String.format("User log in failed: %s ", requestBody.toString()));
-            return ResponseEntity.status(401).body("Email or password incorrect");
-        }
-
-        logger.info(String.format("User log in successfully: %s", findResult.toString()));
-        return ResponseEntity.status(200).body("User log in successfully");
+        return userService.userLogIn(email, password);
     }
 
     @PostMapping("/make_appointment")

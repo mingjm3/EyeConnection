@@ -43,6 +43,19 @@ public class UserService {
         return ResponseEntity.status(201).body("User sign up successfully: " + savedUser.toString());
     }
 
+    public ResponseEntity<String> userLogIn(String email, String password) {
+        User findResult = userRepository.findByEmail(email);
+        
+        //check if user is existing and password is correct
+        if(findResult == null || !findResult.getPassword().equals(password)) {
+            logger.warn(String.format("User log in failed: [%s] ", email));
+            return ResponseEntity.status(401).body("Email or password incorrect");
+        }
+
+        logger.info(String.format("User log in successfully: %s", findResult.toString()));
+        return ResponseEntity.status(200).body("User log in successfully: " + findResult.toString());
+    }
+
     public AppointmentStatus makeAppointment(Long patientSysId, Long doctorSysId, LocalDateTime appointmentDate, Boolean online) {
         AvailableDates queryResult = availableDatesRepository.findByDoctorSysIdAndAvailableDate(doctorSysId, appointmentDate);
         if(queryResult != null) {
