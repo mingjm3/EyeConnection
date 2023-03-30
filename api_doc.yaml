@@ -4,7 +4,7 @@ servers:
   - url: localhost:8080/
 
 info: 
-  version: "2.1.1"
+  version: "2.2.0"
   title: EyeConnection APIs
 
 tags:
@@ -542,6 +542,9 @@ components:
     
     available_dates:
       properties:
+        id:
+          type: number
+          example: 10
         doctor_sys_id:
           type: number
           example: 0137819
