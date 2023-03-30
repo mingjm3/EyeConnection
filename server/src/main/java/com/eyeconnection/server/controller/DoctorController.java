@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.eyeconnection.server.dao.AppointmentRepository;
 import com.eyeconnection.server.dao.AvailableDatesRepository;
 import com.eyeconnection.server.dao.DoctorRepository;
 import com.eyeconnection.server.entity.Doctor;
@@ -22,13 +23,15 @@ import com.eyeconnection.server.utils.DateUtils;
 class DoctorController {
     private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
     private DoctorRepository doctorRepo;
-    private AvailableDatesRepository availableDatesRepository;
     private DoctorService doctorService;
+    private AvailableDatesRepository availableDatesRepository;
+    private AppointmentRepository appointmentRepository;
     
-    public DoctorController(DoctorRepository doctorRepo, DoctorService doctorService, AvailableDatesRepository availableDatesRepository) {
+    public DoctorController(DoctorRepository doctorRepo, DoctorService doctorService, AvailableDatesRepository availableDatesRepository, AppointmentRepository appointmentRepository) {
         this.doctorRepo = doctorRepo;
         this.doctorService = doctorService;
         this.availableDatesRepository = availableDatesRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     @PostMapping("/doctor_log_in")
@@ -53,7 +56,7 @@ class DoctorController {
         LocalDateTime[] newAvailabeDates = requestBody.getNewAvailableDates();
         logger.info(String.format("Request to /update_available_dates %s", requestBody.toString()));
 
-        doctorService = new DoctorService(availableDatesRepository);
+        doctorService = new DoctorService(availableDatesRepository, appointmentRepository);
         
         try {
             doctorService.updateAvailableDates(doctorSysId, newAvailabeDates);
@@ -63,6 +66,15 @@ class DoctorController {
         }
         logger.error(String.format("Updated available dates successfully: %s ", requestBody.toString()));
         return ResponseEntity.status(200).body("Updated available dates successfully");
+    }
+
+    @PutMapping("/confirm_appointment")
+    public ResponseEntity<String> confirmAppointment(@RequestBody Map<String, String> requestBody) {
+        Long appointmentId = Long.valueOf(requestBody.get("appointment_id"));
+        String onlineMeeting = requestBody.get("online_meeting");
+        String notes = requestBody.get("notes");
+        logger.info(String.format("Request to /confirm_appointment %s", requestBody.toString()));
+        return doctorService.confirmAppointment(appointmentId, onlineMeeting, notes);
     }
 
     public static class UpdateDoctorAvailabilityRequest {
