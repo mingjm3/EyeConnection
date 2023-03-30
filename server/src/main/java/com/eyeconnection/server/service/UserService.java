@@ -27,7 +27,6 @@ public class UserService {
     public AppointmentStatus makeAppointment(Long patientSysId, Long doctorSysId, LocalDateTime appointmentDate, Boolean online) {
         AvailableDates queryResult = availableDatesRepository.findByDoctorSysIdAndAvailableDate(doctorSysId, appointmentDate);
         if(queryResult != null) {
-            //write a new appointment in database
             Appointment newAppointment = new Appointment(doctorSysId, patientSysId, online, appointmentDate, AppointmentStatus.PENDING);
             appointmentRepository.saveAndFlush(newAppointment);
             logger.info(String.format("Write an appointment to database: %s", newAppointment.toString()));
