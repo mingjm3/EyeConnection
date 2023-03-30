@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.eyeconnection.server.dao.AppointmentRepository;
@@ -29,31 +28,31 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<String> signUp(User newUser) {
+    public User signUp(User newUser) {
         User findResult = userRepository.findByEmail(newUser.getEmail());
         
         //check if user is already exists
         if(findResult != null) {
             logger.warn(String.format("User sign up failed: %s", newUser.toString()));
-            return ResponseEntity.status(202).body("User sign up failed: " + newUser.toString());
+            return null;
         }
         
         User savedUser = userRepository.save(newUser);
         logger.info(String.format("User sign up successfully: %s", savedUser.toString()));
-        return ResponseEntity.status(201).body("User sign up successfully: " + savedUser.toString());
+        return savedUser;
     }
 
-    public ResponseEntity<String> userLogIn(String email, String password) {
+    public boolean userLogIn(String email, String password) {
         User findResult = userRepository.findByEmail(email);
         
         //check if user is existing and password is correct
         if(findResult == null || !findResult.getPassword().equals(password)) {
             logger.warn(String.format("User log in failed: [%s] ", email));
-            return ResponseEntity.status(401).body("Email or password incorrect");
+            return false;
         }
 
         logger.info(String.format("User log in successfully: %s", findResult.toString()));
-        return ResponseEntity.status(200).body("User log in successfully: " + findResult.toString());
+        return true;
     }
 
     public AppointmentStatus makeAppointment(Long patientSysId, Long doctorSysId, LocalDateTime appointmentDate, Boolean online) {
