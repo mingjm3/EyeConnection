@@ -1,9 +1,5 @@
 package com.eyeconnection.server.entity;
 
-import java.util.Date;
-
-import com.eyeconnection.server.enums.DoctorRoles;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,8 +17,6 @@ public class Doctor {
     private String firstName;
     @Column(name = "zip_code")
     private String zipCode;
-    @Column(name = "available_dates")
-    private Date[] availableDates;
     @Column(name = "support_online")
     private boolean supportOnline;
 
@@ -32,6 +26,38 @@ public class Doctor {
     private String address;
     private String city;
     private String state;
-    private DoctorRoles role;
+    private String role;
     private String portrait;
+
+    public Doctor() {
+    }
+
+    public Doctor(Long sysId, String lastName, String firstName, String zipCode,
+            boolean supportOnline, String email, String password, Float rate, String address, String city, String state,
+            String role, String portrait) {
+        this.sysId = sysId;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.zipCode = zipCode;
+        this.supportOnline = supportOnline;
+        this.email = email;
+        this.password = password;
+        this.rate = rate;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.role = role;
+        this.portrait = portrait;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor [sysId=" + sysId + ", lastName=" + lastName + ", firstName=" + firstName + ", zipCode=" + zipCode + ", supportOnline=" + supportOnline
+                + ", email=" + email + ", rate=" + rate + ", address=" + address + ", city=" + city + ", state=" + state
+                + ", role=" + role + ", portrait=" + portrait + "]";
+    }
 }
