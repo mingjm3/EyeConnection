@@ -29,7 +29,7 @@ public class UserService {
         if(queryResult != null) {
             Appointment newAppointment = new Appointment(doctorSysId, patientSysId, online, appointmentDate, AppointmentStatus.PENDING);
             appointmentRepository.saveAndFlush(newAppointment);
-            logger.info(String.format("Write an appointment to database: %s", newAppointment.toString()));
+            logger.info(String.format("Create an appointment: %s", newAppointment.toString()));
             return AppointmentStatus.PENDING;
         }
         return AppointmentStatus.ABORTED;

@@ -69,7 +69,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [sysId=" + sysId + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+        return "User [sysId=" + sysId + ", email=" + email + ", firstName=" + firstName
                 + ", lastName=" + lastName + ", zipCode=" + zipCode + "]";
     }
 }

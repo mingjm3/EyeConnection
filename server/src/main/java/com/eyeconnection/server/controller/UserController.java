@@ -35,30 +35,30 @@ public class UserController {
         
         //check if user is already exists
         if(findResult != null) {
-            logger.info(String.format("User saved rejected [user already exists]: %s", newUser.toString()));
-            return ResponseEntity.status(202).body("User already exists with this email: " + email);
+            logger.warn(String.format("User sign up failed: %s", newUser.toString()));
+            return ResponseEntity.status(202).body("User sign up failed: " + newUser.toString());
         }
 
         User savedUser = userRepo.save(newUser);
-        logger.info(String.format("User saved: %s", savedUser.toString()));
-        return ResponseEntity.status(201).body("User created successfully " + savedUser.getEmail());
+        logger.info(String.format("User saved successfully: %s", savedUser.toString()));
+        return ResponseEntity.status(201).body("User created successfully" + savedUser.toString());
     }
 
     @PostMapping("/user_log_in")
     public ResponseEntity<String> userLogIn(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String password = requestBody.get("password");
-        logger.info(String.format("Request to /user_log_in: %s", email));
+        logger.info(String.format("Request to /user_log_in: %s", requestBody.toString()));
         User findResult = userRepo.findByEmail(email);
         
         //check if user is existing and password is correct
         if(findResult == null || !findResult.getPassword().equals(password)) {
-            logger.error(String.format("User log in failed: %s ", email));
+            logger.warn(String.format("User log in failed: %s ", requestBody.toString()));
             return ResponseEntity.status(401).body("Email or password incorrect");
         }
 
-        logger.info(String.format("User logged in successfully: %s", email));
-        return ResponseEntity.status(200).body("User logged in successfully");
+        logger.info(String.format("User log in successfully: %s", findResult.toString()));
+        return ResponseEntity.status(200).body("User log in successfully");
     }
 
     @PostMapping("/make_appointment")
@@ -68,13 +68,14 @@ public class UserController {
         LocalDateTime appointmentDate = DateUtils.getDate(requestBody.get("appointment_date"));
         Boolean online = Boolean.valueOf(requestBody.get("online"));
 
-        logger.info(String.format("Request to /make_appointment: [%s]", patientSysId));
+        logger.info(String.format("Request to /make_appointment: %s", requestBody.toString()));
 
         AppointmentStatus appointmentStatus = userService.makeAppointment(patientSysId, doctorSysId, appointmentDate, online);
         
         if(appointmentStatus.equals(AppointmentStatus.PENDING)) {
             return ResponseEntity.status(201).body("Make an appointment successfully");
         }
+        logger.warn(String.format("Create an appointment failed: %s", requestBody.toString()));
         return ResponseEntity.status(202).body("Make an appointment failed");
     }
 }

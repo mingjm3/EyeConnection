@@ -29,9 +29,10 @@ class DoctorController {
         String email = requestBody.get("email");
         String password = requestBody.get("password");
         Doctor findResult = doctorRepo.findByEmail(email);
-        
+        logger.info(String.format("Request to /doctor_log_in %s", requestBody.toString()));
+
         if(findResult == null || !findResult.getPassword().equals(password)) {
-            logger.error(String.format("Doctor log in failed: [%s]", email));
+            logger.warn(String.format("Doctor log in failed: %s", requestBody.toString()));
             return ResponseEntity.status(401).body("Email or password incorrect");
         }
 
