@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.eyeconnection.server.dao.AppointmentRepository;
-import com.eyeconnection.server.dao.AvailableDatesRepository;
-import com.eyeconnection.server.dao.UserRepository;
+import com.eyeconnection.server.dao.AppointmentRepo;
+import com.eyeconnection.server.dao.AvailableDatesRepo;
+import com.eyeconnection.server.dao.UserRepo;
 import com.eyeconnection.server.entity.Appointment;
 import com.eyeconnection.server.entity.AvailableDates;
 import com.eyeconnection.server.entity.User;
@@ -18,51 +18,43 @@ import com.eyeconnection.server.enums.AppointmentStatus;
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    private AvailableDatesRepository availableDatesRepository;
-    private AppointmentRepository appointmentRepository;
-    private UserRepository userRepository;
+    private AvailableDatesRepo availableDatesRepo;
+    private AppointmentRepo appointmentRepo;
+    private UserRepo userRepo;
 
-    public UserService(AvailableDatesRepository availableDatesRepository, AppointmentRepository appointmentRepository, UserRepository userRepository) {
-        this.availableDatesRepository = availableDatesRepository;
-        this.appointmentRepository = appointmentRepository;
-        this.userRepository = userRepository;
+    public UserService(AvailableDatesRepo availableDatesRepo, AppointmentRepo appointmentRepo, UserRepo userRepo) {
+        this.availableDatesRepo = availableDatesRepo;
+        this.appointmentRepo = appointmentRepo;
+        this.userRepo = userRepo;
     }
 
     public User signUp(User newUser) {
-        User findResult = userRepository.findByEmail(newUser.getEmail());
-        
-        //check if user is already exists
+        User findResult = userRepo.findByEmail(newUser.getEmail());
         if(findResult != null) {
             logger.warn(String.format("User sign up failed: %s", newUser.toString()));
             return null;
         }
-        
-        User savedUser = userRepository.save(newUser);
+        User savedUser = userRepo.save(newUser);
         logger.info(String.format("User sign up successfully: %s", savedUser.toString()));
         return savedUser;
     }
 
     public boolean userLogIn(String email, String password) {
-        User findResult = userRepository.findByEmail(email);
-        
-        //check if user is existing and password is correct
-        if(findResult == null || !findResult.getPassword().equals(password)) {
-            logger.warn(String.format("User log in failed: [%s] ", email));
-            return false;
-        }
-
-        logger.info(String.format("User log in successfully: %s", findResult.toString()));
-        return true;
+        User findResult = userRepo.findByEmail(email);
+        return findResult != null && findResult.getPassword().equals(password);
     }
 
     public AppointmentStatus makeAppointment(Long patientSysId, Long doctorSysId, LocalDateTime appointmentDate, Boolean online) {
-        AvailableDates queryResult = availableDatesRepository.findByDoctorSysIdAndAvailableDate(doctorSysId, appointmentDate);
+        AvailableDates queryResult = availableDatesRepo.findByDoctorSysIdAndAvailableDate(doctorSysId, appointmentDate);
         if(queryResult != null) {
             Appointment newAppointment = new Appointment(doctorSysId, patientSysId, online, appointmentDate, AppointmentStatus.PENDING);
-            appointmentRepository.saveAndFlush(newAppointment);
+            appointmentRepo.saveAndFlush(newAppointment);
             logger.info(String.format("Create an appointment: %s", newAppointment.toString()));
+            availableDatesRepo.deleteByDoctorSysIdAndAvailableDate(doctorSysId, appointmentDate);
+            logger.info(String.format("Delete doctor [%s] available date [%s]", doctorSysId, appointmentDate));
             return AppointmentStatus.PENDING;
         }
+        logger.warn(String.format("Create an appointment failed with doctor [%s] available date [%s]", doctorSysId, appointmentDate));
         return AppointmentStatus.ABORTED;
     }
 }
