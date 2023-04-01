@@ -12,42 +12,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.eyeconnection.server.dao.AppointmentRepository;
-import com.eyeconnection.server.dao.AvailableDatesRepository;
-import com.eyeconnection.server.dao.DoctorRepository;
-import com.eyeconnection.server.entity.Doctor;
 import com.eyeconnection.server.service.DoctorService;
 import com.eyeconnection.server.utils.DateUtils;
 
 @Controller 
 class DoctorController {
     private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
-    private DoctorRepository doctorRepo;
     private DoctorService doctorService;
-    private AvailableDatesRepository availableDatesRepository;
-    private AppointmentRepository appointmentRepository;
     
-    public DoctorController(DoctorRepository doctorRepo, DoctorService doctorService, AvailableDatesRepository availableDatesRepository, AppointmentRepository appointmentRepository) {
-        this.doctorRepo = doctorRepo;
+    public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
-        this.availableDatesRepository = availableDatesRepository;
-        this.appointmentRepository = appointmentRepository;
     }
 
     @PostMapping("/doctor_log_in")
-    public ResponseEntity<String> userLogIn(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<String> doctorLogIn(@RequestBody Map<String, String> requestBody) {
+        logger.info(String.format("Request to /doctor_log_in %s", requestBody.toString()));
         String email = requestBody.get("email");
         String password = requestBody.get("password");
-        Doctor findResult = doctorRepo.findByEmail(email);
-        logger.info(String.format("Request to /doctor_log_in %s", requestBody.toString()));
-
-        if(findResult == null || !findResult.getPassword().equals(password)) {
-            logger.warn(String.format("Doctor log in failed: %s", requestBody.toString()));
-            return ResponseEntity.status(401).body("Email or password incorrect");
+        
+        if(Boolean.TRUE.equals(doctorService.doctorLogin(email, password))) {
+            logger.info("Doctor log in successfully.");
+            return ResponseEntity.status(200).body("User logged in successfully");
         }
-
-        logger.info(String.format("Doctor log in successfully: %s", findResult.toString()));
-        return ResponseEntity.status(200).body("User logged in successfully");
+        logger.warn(String.format("Doctor log in failed: %s", requestBody.toString()));
+        return ResponseEntity.status(401).body("Email or password incorrect");
     }
 
     @PutMapping("/update_available_dates")
@@ -55,8 +43,6 @@ class DoctorController {
         Long doctorSysId = requestBody.getDoctorSysId();
         LocalDateTime[] newAvailabeDates = requestBody.getNewAvailableDates();
         logger.info(String.format("Request to /update_available_dates %s", requestBody.toString()));
-
-        doctorService = new DoctorService(availableDatesRepository, appointmentRepository);
         
         try {
             doctorService.updateAvailableDates(doctorSysId, newAvailabeDates);

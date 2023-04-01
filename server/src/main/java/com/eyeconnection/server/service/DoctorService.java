@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.eyeconnection.server.dao.AppointmentRepository;
 import com.eyeconnection.server.dao.AvailableDatesRepository;
+import com.eyeconnection.server.dao.DoctorRepository;
 import com.eyeconnection.server.entity.AvailableDates;
+import com.eyeconnection.server.entity.Doctor;
 import com.eyeconnection.server.enums.AppointmentStatus;
 import com.eyeconnection.server.exceptions.AppointmentNotFoundException;
 
@@ -16,10 +18,17 @@ import com.eyeconnection.server.exceptions.AppointmentNotFoundException;
 public class DoctorService {
     private final AvailableDatesRepository availableDatesRepository;
     private final AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
     
-    public DoctorService(AvailableDatesRepository availabledDatesRepository, AppointmentRepository appointmentRepository) {
+    public DoctorService(AvailableDatesRepository availabledDatesRepository, AppointmentRepository appointmentRepository, DoctorRepository doctorRepository) {
         this.availableDatesRepository = availabledDatesRepository;
         this.appointmentRepository = appointmentRepository;
+        this.doctorRepository = doctorRepository;
+    }
+
+    public Boolean doctorLogin(String email, String password) {
+        Doctor findResult = doctorRepository.findByEmail(email);
+        return findResult != null && findResult.getPassword().equals(password);
     }
 
     public void updateAvailableDates(Long doctorSysId, LocalDateTime[] newAvailabeDates) throws Exception {
