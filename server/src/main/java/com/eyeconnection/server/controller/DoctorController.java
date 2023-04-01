@@ -31,10 +31,8 @@ class DoctorController {
         String password = requestBody.get("password");
         
         if(Boolean.TRUE.equals(doctorService.doctorLogin(email, password))) {
-            logger.info("Doctor log in successfully.");
             return ResponseEntity.status(200).body("User logged in successfully");
         }
-        logger.warn(String.format("Doctor log in failed: %s", requestBody.toString()));
         return ResponseEntity.status(401).body("Email or password incorrect");
     }
 
@@ -43,23 +41,15 @@ class DoctorController {
         Long doctorSysId = requestBody.getDoctorSysId();
         LocalDateTime[] newAvailabeDates = requestBody.getNewAvailableDates();
         logger.info(String.format("Request to /update_available_dates %s", requestBody.toString()));
-        
-        try {
-            doctorService.updateAvailableDates(doctorSysId, newAvailabeDates);
-        } catch (Exception e) {
-            logger.error(String.format("Updated available dates failed: %s %s ", requestBody.toString(), e.getMessage()));
-            return ResponseEntity.status(500).body("Updated available dates failed " + e.getMessage());
-        }
-        logger.error(String.format("Updated available dates successfully: %s ", requestBody.toString()));
-        return ResponseEntity.status(200).body("Updated available dates successfully");
+        return doctorService.updateAvailableDates(doctorSysId, newAvailabeDates);
     }
 
     @PutMapping("/confirm_appointment")
     public ResponseEntity<String> confirmAppointment(@RequestBody Map<String, String> requestBody) {
+        logger.info(String.format("Request to /confirm_appointment %s", requestBody.toString()));
         Long appointmentId = Long.valueOf(requestBody.get("appointment_id"));
         String onlineMeeting = requestBody.get("online_meeting");
         String notes = requestBody.get("notes");
-        logger.info(String.format("Request to /confirm_appointment %s", requestBody.toString()));
         return doctorService.confirmAppointment(appointmentId, onlineMeeting, notes);
     }
 

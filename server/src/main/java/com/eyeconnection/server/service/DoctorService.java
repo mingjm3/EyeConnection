@@ -3,12 +3,15 @@ package com.eyeconnection.server.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.eyeconnection.server.dao.AppointmentRepository;
-import com.eyeconnection.server.dao.AvailableDatesRepository;
-import com.eyeconnection.server.dao.DoctorRepository;
+import com.eyeconnection.server.dao.AppointmentRepo;
+import com.eyeconnection.server.dao.AvailableDatesRepo;
+import com.eyeconnection.server.dao.DoctorRepo;
+import com.eyeconnection.server.entity.Appointment;
 import com.eyeconnection.server.entity.AvailableDates;
 import com.eyeconnection.server.entity.Doctor;
 import com.eyeconnection.server.enums.AppointmentStatus;
@@ -16,45 +19,59 @@ import com.eyeconnection.server.exceptions.AppointmentNotFoundException;
 
 @Service
 public class DoctorService {
-    private final AvailableDatesRepository availableDatesRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final DoctorRepository doctorRepository;
+    private static final Logger logger = LoggerFactory.getLogger(DoctorService.class);
+    private final AvailableDatesRepo availableDatesRepo;
+    private final AppointmentRepo appointmentRepo;
+    private final DoctorRepo doctorRepo;
     
-    public DoctorService(AvailableDatesRepository availabledDatesRepository, AppointmentRepository appointmentRepository, DoctorRepository doctorRepository) {
-        this.availableDatesRepository = availabledDatesRepository;
-        this.appointmentRepository = appointmentRepository;
-        this.doctorRepository = doctorRepository;
+    public DoctorService(AvailableDatesRepo availabledDatesRepo, AppointmentRepo appointmentRepo, DoctorRepo doctorRepo) {
+        this.availableDatesRepo = availabledDatesRepo;
+        this.appointmentRepo = appointmentRepo;
+        this.doctorRepo = doctorRepo;
     }
 
     public Boolean doctorLogin(String email, String password) {
-        Doctor findResult = doctorRepository.findByEmail(email);
+        Doctor findResult = doctorRepo.findByEmail(email);
         return findResult != null && findResult.getPassword().equals(password);
     }
 
-    public void updateAvailableDates(Long doctorSysId, LocalDateTime[] newAvailabeDates) throws Exception {
+    public ResponseEntity<String> updateAvailableDates(Long doctorSysId, LocalDateTime[] newAvailabeDates) {
         ArrayList<AvailableDates> newAvailableDatesRecords = new ArrayList<>();
         for(LocalDateTime date : newAvailabeDates) {
             newAvailableDatesRecords.add(new AvailableDates(doctorSysId, date));
         }
-        availableDatesRepository.deleteByDoctorSysId(doctorSysId);
-        availableDatesRepository.saveAllAndFlush(newAvailableDatesRecords);
+        
+        try {
+            availableDatesRepo.deleteByDoctorSysId(doctorSysId);
+            availableDatesRepo.saveAllAndFlush(newAvailableDatesRecords);
+        } catch (Exception e) {
+            logger.error(String.format("Updated available dates failed: %s", e.getMessage()));
+            return ResponseEntity.status(500).body("Updated available dates failed " + e.getMessage());
+        }
+
+        logger.info(String.format("Updated available dates successfully: [%s]", doctorSysId));
+        return ResponseEntity.status(200).body("Updated available dates successfully");
     }
 
     public ResponseEntity<String> confirmAppointment(Long appointmentId, String onlineMeeting, String notes) {
         try {
-            appointmentRepository.findById(appointmentId).map(
+            Appointment ret = appointmentRepo.findById(appointmentId).map(
                 appointment -> {
                     appointment.setAppointmentStatus(AppointmentStatus.APPROVED.toString());
                     appointment.setOnlineMeeting(onlineMeeting);
                     appointment.setNotes(notes);
-                    return appointmentRepository.save(appointment);
+                    return appointmentRepo.save(appointment);
                 }
             ).orElseThrow(() -> new AppointmentNotFoundException(appointmentId));
+
+            if(ret == null) {
+                return ResponseEntity.status(500).body("Confirmation failed");
+            }
+            return ResponseEntity.status(200).body("Confirmation successful");
         } catch (AppointmentNotFoundException e) {
             return ResponseEntity.status(404).body("Appointment not found: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Confirmation failed: " + e.getMessage());
         }
-        return ResponseEntity.status(200).body("Confirmation successful");
     }
 }

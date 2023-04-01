@@ -41,7 +41,7 @@ public class UserController {
         String email = requestBody.get("email");
         String password = requestBody.get("password");
 
-        if(userService.userLogIn(email, password)) {
+        if(Boolean.TRUE.equals(userService.userLogIn(email, password))) {
             return ResponseEntity.status(200).body("User log in successfully");
         }
         return ResponseEntity.status(401).body("Email or password incorrect");
@@ -58,10 +58,8 @@ public class UserController {
         AppointmentStatus appointmentStatus = userService.makeAppointment(patientSysId, doctorSysId, appointmentDate, online);
         
         if(appointmentStatus.equals(AppointmentStatus.PENDING)) {
-            logger.info(String.format("Create an appointment successfully: %s", requestBody.toString()));
             return ResponseEntity.status(201).body("Make an appointment successfully");
         }
-        logger.warn(String.format("Create an appointment failed: %s", requestBody.toString()));
         return ResponseEntity.status(202).body("Make an appointment failed");
     }
 }
