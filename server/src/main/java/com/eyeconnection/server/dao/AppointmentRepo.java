@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.eyeconnection.server.entity.Appointment;
 
-public interface AppointmentRepository extends JpaRepository<Appointment, Long>{
+public interface AppointmentRepo extends JpaRepository<Appointment, Long>{
 }

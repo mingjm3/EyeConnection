@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.eyeconnection.server.dao.UserRepository;
+import com.eyeconnection.server.dao.UserRepo;
 import com.eyeconnection.server.entity.User;
 
 class ServerApplicationTests {
@@ -13,7 +13,7 @@ class ServerApplicationTests {
     private MockMvc mvc;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepo userRepo;
 
     @Test
     public void testSignUp() {

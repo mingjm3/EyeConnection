@@ -8,9 +8,12 @@ import com.eyeconnection.server.entity.AvailableDates;
 
 import jakarta.transaction.Transactional;
 
-public interface AvailableDatesRepository extends JpaRepository<AvailableDates, Long>{
+public interface AvailableDatesRepo extends JpaRepository<AvailableDates, Long>{
     public AvailableDates findByDoctorSysIdAndAvailableDate(Long doctorSysId, LocalDateTime availableDate);
 
     @Transactional
     public void deleteByDoctorSysId(Long doctorSysId);
+
+    @Transactional
+    public void deleteByDoctorSysIdAndAvailableDate(Long doctorSysId, LocalDateTime availableDate);
 }
